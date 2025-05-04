@@ -8,6 +8,10 @@ const EditTruckModal = ({ isOpen, onClose, truck, onUpdate }) => { // Modal comp
 
   const handleSubmit = (e) => { 
     e.preventDefault();
+    if (licensePlate.length !== 7) {
+      alert('License plate must be exactly 7 chars.');
+      return;
+    }
     axios.put(`http://localhost:8080/api/trucks/${truck.id}/edit`, null, {
       params: { licensePlate, model }
     })
@@ -34,6 +38,7 @@ const EditTruckModal = ({ isOpen, onClose, truck, onUpdate }) => { // Modal comp
             onChange={(e) => setLicensePlate(e.target.value)}
             placeholder="License Plate"
             required
+            maxLength="7"
           />
         <select value={model} onChange={(e) => setModel(e.target.value)} required>
           <option value="">Select Model</option>
