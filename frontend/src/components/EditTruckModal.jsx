@@ -3,6 +3,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify'; // Importing toast for notifications
 
 const EditTruckModal = ({ isOpen, onClose, truck, onUpdate }) => { // Modal component to edit truck details
+  const [truckNumber, setTruckNumber] = useState(truck.truckNumber); // State variable to manage the truck number input
   const [licensePlate, setLicensePlate] = useState(truck.licensePlate); // State variable to manage the license plate input
   const [model, setModel] = useState(truck.model); // State variable to manage the model input
 
@@ -12,8 +13,13 @@ const EditTruckModal = ({ isOpen, onClose, truck, onUpdate }) => { // Modal comp
       alert('License plate must be exactly 7 chars.');
       return;
     }
+    if (truckNumber.length !== 7) {
+      alert('truck number must be exactly7 chars.');
+      return;
+    }
+    
     axios.put(`http://localhost:8080/api/trucks/${truck.id}/edit`, null, {
-      params: { licensePlate, model }
+      params: { truckNumber, licensePlate, model }
     })
       .then(() => { // API endpoint to update truck details
         onUpdate(); // refresh table
@@ -32,6 +38,14 @@ const EditTruckModal = ({ isOpen, onClose, truck, onUpdate }) => { // Modal comp
       <div style={styles.modal}>
         <h2>Edit Truck</h2> 
         <form onSubmit={handleSubmit} style={styles.form}>
+          <input
+            type="text"
+            value={truckNumber}
+            onChange={(e) => setTruckNumber(e.target.value)}
+            placeholder="Truck Number"
+            required
+            maxLength="7"
+          />
           <input
             type="text"
             value={licensePlate}
