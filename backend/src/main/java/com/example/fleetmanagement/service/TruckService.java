@@ -37,9 +37,10 @@ public class TruckService {
         return truckRepository.save(truck);
     }
 
-    public Truck editTruck(Long id, String licensePlate, String model) {
+    public Truck editTruck(Long id, String truckNumber, String licensePlate, String model) {
         Truck truck = truckRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Truck not found"));
+        truck.setTruckNumber(truckNumber);
         truck.setLicensePlate(licensePlate);
         truck.setModel(model);
         truck.setLastUpdated(LocalDateTime.now());

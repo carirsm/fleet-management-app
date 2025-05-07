@@ -13,6 +13,9 @@ public class Truck {
     @GeneratedValue(strategy = GenerationType.IDENTITY)  // Auto-increment ID
     private Long id;
 
+    @Column(name = "truck_number", nullable = false, unique = true, length = 7)
+    private String truckNumber;
+
     @Column(nullable = false, unique = true)
     private String licensePlate;
 

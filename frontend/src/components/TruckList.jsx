@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 // Manages truck list: displays, adds, edits, deletes, and updates trucks
 const TruckList = () => {
   const [trucks, setTrucks] = useState([]);
+  const [truckNumber, setTruckNumber] = useState('');
   const [licensePlate, setLicensePlate] = useState('');
   const [model, setModel] = useState('');
   const [status, setStatus] = useState('');
@@ -35,15 +36,21 @@ const TruckList = () => {
       return;
     }
 
+    if (truckNumber.length !== 7) {
+      alert('Truck number must be exactly 7 chars.');
+      return;
+    }
+
     if (!model || !status || !assignedDriver.trim()) {
       alert('Please fill in all fields.');
       return;
     }
 
-    const newTruck = { licensePlate, model, status, assignedDriver };
+    const newTruck = { truckNumber, licensePlate, model, status, assignedDriver };
     axios.post('http://localhost:8080/api/trucks', newTruck)
       .then(() => {
         fetchTrucks();
+        setTruckNumber('');
         setLicensePlate('');
         setModel('');
         setStatus('');
@@ -113,6 +120,15 @@ const TruckList = () => {
       <form onSubmit={handleSubmit} style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
         <input
           type="text"
+          placeholder="Truck Number"
+          value={truckNumber}
+          onChange={(e) => setTruckNumber(e.target.value)}
+          required
+          maxLength="7"
+        />
+        
+        <input
+          type="text"
           placeholder="License Plate"
           value={licensePlate}
           onChange={(e) => setLicensePlate(e.target.value)}
@@ -150,6 +166,7 @@ const TruckList = () => {
         <thead>
           <tr>
             <th>ID</th>
+            <th>Truck Number</th>
             <th>License Plate</th>
             <th>Model</th>
             <th>Status</th>
@@ -163,6 +180,7 @@ const TruckList = () => {
             trucks.map((truck) => (
               <tr key={truck.id}>
                 <td>{truck.id}</td>
+                <td>{truck.truckNumber}</td>
                 <td>{truck.licensePlate}</td>
                 <td>{truck.model}</td>
                 <td>

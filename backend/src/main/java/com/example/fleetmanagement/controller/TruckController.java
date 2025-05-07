@@ -46,10 +46,11 @@ public class TruckController {
     @PutMapping("/{id}/edit")
     public ResponseEntity<Truck> editTruck(
             @PathVariable Long id,
+            @RequestParam String truckNumber,
             @RequestParam String licensePlate,
             @RequestParam String model
     ) {
-        Truck truck = truckService.editTruck(id, licensePlate, model);
+        Truck truck = truckService.editTruck(id, truckNumber, licensePlate, model);
         return ResponseEntity.ok(truck);
     }
 
