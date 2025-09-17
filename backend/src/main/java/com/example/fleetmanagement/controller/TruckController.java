@@ -43,14 +43,21 @@ public class TruckController {
         return ResponseEntity.ok(truck);
     }
 
+    @PutMapping("/{id}/notes")
+    public ResponseEntity<Truck> updateTruckNotes(@PathVariable Long id, @RequestParam String notes) {
+        Truck updatedTruck = truckService.updateTruckNotes(id, notes);
+        return ResponseEntity.ok(updatedTruck);
+    }
+
     @PutMapping("/{id}/edit")
     public ResponseEntity<Truck> editTruck(
             @PathVariable Long id,
             @RequestParam String truckNumber,
             @RequestParam String licensePlate,
-            @RequestParam String model
+            @RequestParam String model,
+            @RequestParam(required = false) String notes
     ) {
-        Truck truck = truckService.editTruck(id, truckNumber, licensePlate, model);
+        Truck truck = truckService.editTruck(id, truckNumber, licensePlate, model, notes);
         return ResponseEntity.ok(truck);
     }
 
