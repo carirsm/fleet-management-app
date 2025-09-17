@@ -37,13 +37,23 @@ public class TruckService {
         return truckRepository.save(truck);
     }
 
-    public Truck editTruck(Long id, String truckNumber, String licensePlate, String model) {
+    public Truck editTruck(Long id, String truckNumber, String licensePlate, String model, String notes) {
         Truck truck = truckRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Truck not found"));
         truck.setTruckNumber(truckNumber);
         truck.setLicensePlate(licensePlate);
         truck.setModel(model);
         truck.setLastUpdated(LocalDateTime.now());
+        if (notes != null) {
+            truck.setNotes(notes);
+        }
+        return truckRepository.save(truck);
+    }
+
+    public Truck updateTruckNotes(Long id, String notes) {
+        Truck truck = truckRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Truck not found with id " + id));
+        truck.setNotes(notes);
         return truckRepository.save(truck);
     }
 
