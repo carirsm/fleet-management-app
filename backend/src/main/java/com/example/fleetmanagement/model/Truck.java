@@ -30,4 +30,9 @@ public class Truck {
 
     @Column(name = "last_updated")
     private LocalDateTime lastUpdated;
+
+    @Column(name = "notes", columnDefinition = "TEXT")
+    private String notes;
+
+
 }
