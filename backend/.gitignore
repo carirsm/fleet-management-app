@@ -1,3 +1,10 @@
+#  Environment & Credentials
+.env
+*.env
+
+/backend/src/main/resources/application.properties
+/backend/src/main/resources/application-*.properties
+
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
