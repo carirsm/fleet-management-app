@@ -5,6 +5,11 @@
 /backend/src/main/resources/application.properties
 /backend/src/main/resources/application-*.properties
 
+# Mac OS files
+
+.DS_Store
+**/.DS_Store
+
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
