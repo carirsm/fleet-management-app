@@ -4,8 +4,9 @@ import EditTruckModal from './EditTruckModal';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-// Manages truck list: displays, adds, edits, deletes, and updates trucks
+// Manages truck list components: displays, adds, edits, deletes, and updates trucks
 const TruckList = () => {
+  // State Section
   const [trucks, setTrucks] = useState([]);
   const [truckNumber, setTruckNumber] = useState('');
   const [licensePlate, setLicensePlate] = useState('');
@@ -14,6 +15,15 @@ const TruckList = () => {
   const [assignedDriver, setAssignedDriver] = useState('');
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [selectedTruck, setSelectedTruck] = useState(null);
+  const [selectedIssues, setSelectedIssues] = useState([]);
+
+  const issueOptions = [
+    "Flat Tire",
+    "Brake Issue",
+    "Oil Leak",
+    "Engine Noise",
+    "Electrical Problem"
+  ];
 
   // Fetches trucks from backend
   const fetchTrucks = () => {
@@ -46,7 +56,16 @@ const TruckList = () => {
       return;
     }
 
-    const newTruck = { truckNumber, licensePlate, model, status, assignedDriver };
+    const newTruck = { 
+      truckNumber, 
+      licensePlate, 
+      model, 
+      status, 
+      assignedDriver, 
+      notes: (status === "Out of Service" || status === "Needs Maintenance")
+        ? selectedIssues.join(', ') 
+        : ''
+    };
     axios.post('http://localhost:8080/api/trucks', newTruck)
       .then(() => {
         fetchTrucks();
@@ -55,6 +74,7 @@ const TruckList = () => {
         setModel('');
         setStatus('');
         setAssignedDriver('');
+        setSelectedIssues([]);
         toast.success('Truck added successfully!');
       })
       .catch((error) => {
@@ -115,6 +135,9 @@ const TruckList = () => {
     closeEditModal();
   };
 
+  // Log the currrent status to see if ti's updating 
+  console.log("Selected Status:", status);
+
   return (
     <div>
       <form onSubmit={handleSubmit} style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
@@ -144,7 +167,13 @@ const TruckList = () => {
           <option value="Freightliner">Freightliner</option>
         </select>
 
-        <select value={status} onChange={(e) => setStatus(e.target.value)} required>
+        <select value={status} 
+        onChange={(e) => { 
+          setStatus(e.target.value); 
+          console.log("Status Selected:", e.target.value);
+        }}
+        required
+        >
           <option value="">Select Status</option>
           <option value="In Service">In Service</option>
           <option value="Out of Service">Out of Service</option>
@@ -160,6 +189,33 @@ const TruckList = () => {
         />
 
         <button type="submit">Add Truck</button>
+
+        {console.log("STATUS IS:", status)}
+        {(status === "Out of Service" || status === "Needs Maintenance") && (
+          <div>
+            <label>Issues:</label>
+            {issueOptions.map((issue) => (
+              <div key={issue}>
+                <label>
+                  <input 
+                  type="checkbox"
+                  value={issue}
+                  checked={selectedIssues.includes(issue)}
+                  onChange={(e) => {
+                    const checked = e.target.checked;
+                    if (checked) {
+                      setSelectedIssues([...selectedIssues, issue]);
+                    } else {
+                      setSelectedIssues(selectedIssues.filter((i) => i !== issue));
+                    }
+                  }}
+                  />
+                  {issue}
+                </label>
+                </div>
+            ))}
+          </div>
+        )}
       </form>
 
       <table border="1" cellPadding="10" cellSpacing="0">
@@ -172,6 +228,7 @@ const TruckList = () => {
             <th>Status</th>
             <th>Assigned Driver</th>
             <th>Last Updated</th>
+            <th>Notes</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -195,6 +252,16 @@ const TruckList = () => {
                 </td>
                 <td>{truck.assignedDriver}</td>
                 <td>{truck.lastUpdated ? new Date(truck.lastUpdated).toLocaleString() : 'N/A'}</td>
+                <td style={{
+                   backgroundColor: (truck.status === 'Out of Service' || truck.status === 'Needs Maintenance') 
+                   ? '#fff3cd' 
+                   : 'inherit' 
+                   }}
+                  >
+                  {(truck.status === 'Out of Service' || truck.status === 'Needs Maintenance')
+                      ? (truck.notes || '-')
+                    : '-'}
+                    </td>
                 <td>
                   <button onClick={() => handleDriverUpdate(truck.id)}>Update Driver</button>{' '}
                   <button onClick={() => openEditModal(truck)}>Edit</button>{' '}
