@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios'; 
 import { toast } from 'react-toastify'; // Importing toast for notifications
 
+//Components to edit truck details
 const EditTruckModal = ({ isOpen, onClose, truck, onUpdate }) => { // Modal component to edit truck details
   const [truckNumber, setTruckNumber] = useState(truck.truckNumber); // State variable to manage the truck number input
   const [licensePlate, setLicensePlate] = useState(truck.licensePlate); // State variable to manage the license plate input
