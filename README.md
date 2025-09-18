@@ -58,7 +58,7 @@ A full-stack web application for managing trucks, assigning drivers, and trackin
 
 ## 🧠 About This Project
 
-This app was created as part of my learning journey into full-stack development. It represents a simplified system for managing trucks and their drivers, and allowed me to practice building a frontend and backend that communicate through REST APIs.
+This app was created as part of my learning journey into full-stack engineering. It represents a simplified system for managing trucks and their drivers, and allowed me to practice building a frontend and backend that communicate through REST APIs.
 
 ---
 
@@ -75,7 +75,7 @@ This app was created as part of my learning journey into full-stack development.
 ## 👨‍💻 Author
 
 **Oscar Paul Perez**  
-Aspiring Software Developer with a background in dispatch and logistics coordination.  
+Aspiring Software Engineer with a background in dispatch and logistics coordination.  
 [LinkedIn](https://www.linkedin.com/in/oscarpaulperez/)  
 [GitHub](https://github.com/carirsm)
 
